@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class TodoService {
@@ -48,10 +50,10 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true) // 읽기 전용 트랜잭션으로 설정(성능 최적화 및 의도 명확성을 위해 사용)
-    public Page<TodoResponse> getTodos(int page, int size) {
+    public Page<TodoResponse> findTodosByConditions(String weather, LocalDateTime startDate, LocalDateTime endDate, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        Page<Todo> todos = todoRepository.findAllByOrderByModifiedAtDesc(pageable);
+        Page<Todo> todos = todoRepository.findTodosByConditions(weather, startDate, endDate, pageable);
 
         return todos.map(todo -> new TodoResponse(
                 todo.getId(),
