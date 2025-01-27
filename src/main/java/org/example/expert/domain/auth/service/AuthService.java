@@ -43,9 +43,9 @@ public class AuthService {
         );
         User savedUser = userRepository.save(newUser);
 
-        String bearerToken = jwtUtil.createToken(savedUser.getId(), savedUser.getNickname(), savedUser.getEmail(), userRole);
+        String token = jwtUtil.createToken(savedUser.getId(), savedUser.getNickname(), savedUser.getEmail(), userRole);
 
-        return new SignupResponse(bearerToken);
+        return new SignupResponse(token);
     }
 
     public SigninResponse signin(SigninRequest signinRequest) {
